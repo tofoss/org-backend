@@ -1,0 +1,46 @@
+# Stack-specific files
+.stack-work/
+
+# GHC specific
+dist/
+dist-newstyle/
+cabal.project.local
+*.o
+*.hi
+*.dyn_o
+*.dyn_hi
+*.prof
+*.aux
+*.haddock
+*.hp
+*.eventlog
+*.tix
+
+# Cabal
+*.cabal-sandbox/
+cabal.sandbox.config
+package-env*
+*.buildinfo
+setup-config
+
+# Haskell REPL
+.ghci
+.ghc.environment.*
+
+# OS-specific files (macOS)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows specific
+Thumbs.db
+desktop.ini
+
+# Vim/Emacs-specific (if you use these editors)
+*.swp
+*.swo
+*~
+*.un~
+
+# Stack hoogle
+hoogle/
