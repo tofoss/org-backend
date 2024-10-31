@@ -23,6 +23,8 @@ dependencies:
   - base >= 4.7 && < 5
   - aeson
   - servant-server
+  - servant-auth
+  - servant-auth-server
   - wai
   - warp
   - warp-tls
@@ -31,6 +33,7 @@ dependencies:
   - bytestring
   - directory
   - filepath
+  - uuid
 
 ghc-options:
   - -Wall
