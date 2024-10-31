@@ -25,9 +25,12 @@ dependencies:
   - servant-server
   - wai
   - warp
+  - warp-tls
   - postgresql-simple >= 0.7
   - bcrypt
   - bytestring
+  - directory
+  - filepath
 
 ghc-options:
   - -Wall

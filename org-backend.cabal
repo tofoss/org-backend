@@ -45,10 +45,13 @@ library
     , base >=4.7 && <5
     , bcrypt
     , bytestring
+    , directory
+    , filepath
     , postgresql-simple >=0.7
     , servant-server
     , wai
     , warp
+    , warp-tls
   default-language: Haskell2010
 
 executable org-backend-exe
@@ -65,11 +68,14 @@ executable org-backend-exe
     , base
     , bcrypt
     , bytestring
+    , directory
+    , filepath
     , org-backend
     , postgresql-simple >=0.7
     , servant-server
     , wai
     , warp
+    , warp-tls
   default-language: Haskell2010
 
 test-suite org-backend-test
@@ -87,6 +93,8 @@ test-suite org-backend-test
     , base
     , bcrypt
     , bytestring
+    , directory
+    , filepath
     , hspec
     , hspec-wai
     , hspec-wai-json
@@ -95,4 +103,5 @@ test-suite org-backend-test
     , servant-server
     , wai
     , warp
+    , warp-tls
   default-language: Haskell2010
