@@ -29,6 +29,8 @@ library
       API.Requests.RegisterRequest
       API.Responses.RegisterResponse
       API.Routes
+      App
+      Crypto
       DB.Connection
       DB.Users
       Handlers.Users
@@ -46,8 +48,10 @@ library
     , base >=4.7 && <5
     , bcrypt
     , bytestring
+    , cryptonite
     , directory
     , filepath
+    , jose
     , postgresql-simple >=0.7
     , servant-auth
     , servant-auth-server
@@ -72,8 +76,10 @@ executable org-backend-exe
     , base
     , bcrypt
     , bytestring
+    , cryptonite
     , directory
     , filepath
+    , jose
     , org-backend
     , postgresql-simple >=0.7
     , servant-auth
@@ -100,11 +106,13 @@ test-suite org-backend-test
     , base
     , bcrypt
     , bytestring
+    , cryptonite
     , directory
     , filepath
     , hspec
     , hspec-wai
     , hspec-wai-json
+    , jose
     , org-backend
     , postgresql-simple >=0.7
     , servant-auth

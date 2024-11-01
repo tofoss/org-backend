@@ -1,7 +1,6 @@
 module Main where
-
-import API.Routes
+import App
 
 main :: IO ()
-main = start
+main = app
 

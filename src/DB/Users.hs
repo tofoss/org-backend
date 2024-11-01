@@ -24,5 +24,5 @@ fetchHashedPassword conn _username = do
 
 fetchUser :: Connection -> String -> IO (Maybe User)
 fetchUser conn _username = do
-    results <- query conn "SELECT username FROM users WHERE username = ?" (Only _username)
+    results <- query conn "SELECT id, username FROM users WHERE username = ?" (Only _username)
     return $ listToMaybe results
