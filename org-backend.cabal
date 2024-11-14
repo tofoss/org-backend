@@ -25,16 +25,20 @@ source-repository head
 
 library
   exposed-modules:
+      API.Requests.ArticleRequest
       API.Requests.LoginRequest
       API.Requests.RegisterRequest
       API.Responses.RegisterResponse
       API.Routes
       App
+      Auth
       Crypto
+      DB.Articles
       DB.Connection
       DB.Users
+      Handlers.Articles
       Handlers.Users
-      Lib
+      Models.Article
       Models.User
   other-modules:
       Paths_org_backend
@@ -56,6 +60,7 @@ library
     , servant-auth
     , servant-auth-server
     , servant-server
+    , time
     , uuid
     , wai
     , warp
@@ -85,6 +90,7 @@ executable org-backend-exe
     , servant-auth
     , servant-auth-server
     , servant-server
+    , time
     , uuid
     , wai
     , warp
@@ -118,6 +124,7 @@ test-suite org-backend-test
     , servant-auth
     , servant-auth-server
     , servant-server
+    , time
     , uuid
     , wai
     , warp

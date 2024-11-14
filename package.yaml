@@ -36,6 +36,7 @@ dependencies:
   - uuid
   - jose
   - cryptonite
+  - time
 
 ghc-options:
   - -Wall

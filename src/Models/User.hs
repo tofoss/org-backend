@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveAnyClass #-}
 
-module Models.User where
+module Models.User (User(..)) where
 import Servant.Auth.JWT (ToJWT, FromJWT)
 import GHC.Generics
 import Data.Aeson (ToJSON, FromJSON)

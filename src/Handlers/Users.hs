@@ -4,42 +4,43 @@
 
 module Handlers.Users (registerHandler, loginHandler) where
 
+import API.Requests.LoginRequest (LoginRequest (..))
 import API.Requests.RegisterRequest
 import API.Responses.RegisterResponse (RegisterResponse (..))
+import Auth (auth)
 import Control.Monad.IO.Class
+import Crypto (hashPassword', verifyPassword)
 import DB.Users
 import Database.PostgreSQL.Simple
 import Models.User
 import Servant
 import Servant.Auth.Server
-import API.Requests.LoginRequest (LoginRequest (..))
-import Crypto (hashPassword', verifyPassword)
 
 registerHandler :: Connection -> RegisterRequest -> Handler RegisterResponse
 registerHandler conn RegisterRequest {..} = do
-    userExists <- liftIO $ checkUserExists conn username
-    if userExists
-        then throwError err409 { errBody = "Username already exists" }
-        else handleUserRegistration conn username password
+  userExists <- liftIO $ checkUserExists conn username
+  if userExists
+    then throwError err409 {errBody = "Username already exists"}
+    else handleUserRegistration conn username password
 
 handleUserRegistration :: Connection -> String -> String -> Handler RegisterResponse
 handleUserRegistration conn username password = do
-    hashedPassword <- hashPassword password
-    registerUser conn username hashedPassword
+  hashedPassword <- hashPassword password
+  registerUser conn username hashedPassword
 
 hashPassword :: String -> Handler String
 hashPassword password = do
-    maybeHashedPassword <- liftIO $ hashPassword' password
-    case maybeHashedPassword of
-        Nothing   -> throwError err500 { errBody = "Password hashing failed" }
-        Just hash -> return hash
+  maybeHashedPassword <- liftIO $ hashPassword' password
+  case maybeHashedPassword of
+    Nothing -> throwError err500 {errBody = "Password hashing failed"}
+    Just hash -> return hash
 
 registerUser :: Connection -> String -> String -> Handler RegisterResponse
 registerUser conn username hashedPassword = do
-    success <- liftIO $ insertUser conn username hashedPassword
-    if success
-        then return RegisterResponse { message = "Success" }
-        else throwError err500 { errBody = "User registration failed" }
+  success <- liftIO $ insertUser conn username hashedPassword
+  if success
+    then return RegisterResponse {message = "Success"}
+    else throwError err500 {errBody = "User registration failed"}
 
 loginHandler ::
   Connection ->
@@ -56,10 +57,8 @@ loginUser ::
   JWTSettings ->
   AuthResult User ->
   Handler (Headers '[Header "Set-Cookie" SetCookie, Header "Set-Cookie" SetCookie] NoContent)
-loginUser cookieSettings jwtSettings authResult  =
-  case authResult of
-    Authenticated user -> createCookies cookieSettings jwtSettings user
-    _ -> throwError err403 {errBody = "Invalid credentials"}
+loginUser cookieSettings jwtSettings authResult = 
+    auth authResult $ createCookies cookieSettings jwtSettings
 
 createCookies ::
   CookieSettings ->
@@ -85,6 +84,6 @@ verifyUser conn username password = do
     Just hash -> do
       if not (verifyPassword password hash)
         then do
-        return Nothing
+          return Nothing
         else do
           liftIO $ fetchUser conn username
