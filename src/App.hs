@@ -21,7 +21,7 @@ corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
     { corsOrigins = Just (["http://localhost:5173"], True)
     , corsMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    , corsRequestHeaders = ["Authorization", "Content-Type"]
+    , corsRequestHeaders = ["Authorization", "Content-Type", "X-XSRF-TOKEN"]
     , corsExposedHeaders = Just ["Authorization"]
     , corsMaxAge = Just 3600
     }

@@ -43,7 +43,6 @@ registerUser conn username hashedPassword = do
     then return RegisterResponse {message = "Success"}
     else throwError err500 {errBody = "User registration failed"}
 
-
 authStatusHandler :: AuthResult User -> Handler AuthStatusResponse
 authStatusHandler (Authenticated User {..}) = return $ AuthStatusResponse True username
 authStatusHandler _ = return $ AuthStatusResponse False ""
