@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Handlers.Users (registerHandler, loginHandler) where
+module Handlers.Users (registerHandler, loginHandler, authStatusHandler) where
 
 import API.Requests.LoginRequest (LoginRequest (..))
 import API.Requests.RegisterRequest
@@ -15,6 +15,7 @@ import Database.PostgreSQL.Simple
 import Models.User
 import Servant
 import Servant.Auth.Server
+import API.Responses.AuthStatusResponse (AuthStatusResponse(..))
 
 registerHandler :: Connection -> RegisterRequest -> Handler RegisterResponse
 registerHandler conn RegisterRequest {..} = do
@@ -41,6 +42,11 @@ registerUser conn username hashedPassword = do
   if success
     then return RegisterResponse {message = "Success"}
     else throwError err500 {errBody = "User registration failed"}
+
+
+authStatusHandler :: AuthResult User -> Handler AuthStatusResponse
+authStatusHandler (Authenticated User {..}) = return $ AuthStatusResponse True username
+authStatusHandler _ = return $ AuthStatusResponse False ""
 
 loginHandler ::
   Connection ->

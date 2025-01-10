@@ -28,6 +28,7 @@ library
       API.Requests.ArticleRequest
       API.Requests.LoginRequest
       API.Requests.RegisterRequest
+      API.Responses.AuthStatusResponse
       API.Responses.RegisterResponse
       API.Routes
       App
