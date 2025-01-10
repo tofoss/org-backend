@@ -26,6 +26,8 @@ dependencies:
   - servant-auth
   - servant-auth-server
   - wai
+  - wai-cors
+  - wai-extra
   - warp
   - warp-tls
   - postgresql-simple >= 0.7
@@ -37,6 +39,7 @@ dependencies:
   - jose
   - cryptonite
   - time
+  - optparse-applicative
 
 ghc-options:
   - -Wall
