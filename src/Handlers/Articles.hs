@@ -1,12 +1,12 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Handlers.Articles (articleHandler) where
+module Handlers.Articles (articleHandler, fetchUsersArticlesHandler) where
 
 import qualified API.Requests.ArticleRequest as Req
 import Auth (auth)
 import Control.Monad.IO.Class
-import DB.Articles (fetchArticle, upsertArticle)
+import DB.Articles (fetchArticle, upsertArticle, fetchUsersArticles)
 import Data.Time.Clock (getCurrentTime, UTCTime)
 import Data.UUID
 import Data.UUID.V4 (nextRandom)
@@ -16,6 +16,10 @@ import Models.User (User (..))
 import Servant
 import Servant.Auth.Server (AuthResult (..))
 import Prelude hiding (id)
+
+
+fetchUsersArticlesHandler :: Connection -> AuthResult User -> Handler [Article]
+fetchUsersArticlesHandler conn authResult = auth authResult $ \user -> liftIO $ fetchUsersArticles conn (userId user)
 
 articleHandler :: Connection -> AuthResult User -> Req.ArticleRequest -> Handler Article
 articleHandler conn authResult req = auth authResult $ handleArticleReq conn req
@@ -51,7 +55,7 @@ updateArticle conn req user id = do
   updateArticle' conn req article
 
 updateArticle' :: Connection -> Req.ArticleRequest -> Maybe Article -> Handler Article
-updateArticle' _ _ Nothing = throwError err403 {errBody = "Invalid credentials"}
+updateArticle' _ _ Nothing = throwError err403 {errBody = "Could not update article - Invalid credentials"}
 updateArticle' conn req (Just article) = do
   currentTime <- liftIO getCurrentTime
 

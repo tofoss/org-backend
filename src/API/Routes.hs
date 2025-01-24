@@ -14,7 +14,7 @@ import qualified Servant.Auth as SA
 import Servant.Auth.Server
 import API.Requests.ArticleRequest (ArticleRequest)
 import Models.Article (Article)
-import Handlers.Articles (articleHandler)
+import Handlers.Articles (articleHandler, fetchUsersArticlesHandler)
 import API.Responses.AuthStatusResponse
 
 type API auths =
@@ -22,6 +22,7 @@ type API auths =
     :<|> "users" :> "auth" :> "login" :> ReqBody '[JSON] LoginRequest :> Post '[JSON] (Headers '[Header "Set-Cookie" SetCookie, Header "Set-Cookie" SetCookie] NoContent)
     :<|> Auth auths User :> "users" :> "auth" :> "status" :> Get '[JSON] AuthStatusResponse 
     :<|> Auth auths User :> "articles" :> ReqBody '[JSON] ArticleRequest :> Post '[JSON] Article
+    :<|> Auth auths User :> "articles" :> Get '[JSON] [Article]
 
 api :: Proxy (API '[SA.JWT, SA.Cookie])
 api = Proxy
@@ -32,4 +33,5 @@ server conn cookieSettings jwtSettings =
     :<|> loginHandler conn cookieSettings jwtSettings
     :<|> authStatusHandler
     :<|> articleHandler conn
+    :<|> fetchUsersArticlesHandler conn
 
