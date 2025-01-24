@@ -49,6 +49,6 @@ fetchArticle conn articleId userId = do
 
 fetchUsersArticles :: Connection -> UUID -> IO [Article]
 fetchUsersArticles conn userId = do
-    let stmt = "select id, user_id, title, content, created_at, updated_at, published_at, published from articles where and user_id = ?"
+    let stmt = "select id, user_id, title, content, created_at, updated_at, published_at, published from articles where user_id = ?"
 
     query conn stmt (Only userId)
